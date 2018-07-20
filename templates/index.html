@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> Login and Registration</title>
+
+</head>
+
+<body>
+        <div class = "container">
+                <form action='/submit' method='post'>
+                <p>Email: <input type='text' name='email' placeholder='name@example.com'></p>
+                <p>First Name: <input type='text' name='first_name' placeholder='first name'></p>
+                <p>Last Name: <input type='text' name='last_name' placeholder='last name'></p>
+                <p>Password: <input type='password' name='password'></p>
+                <p>Confirm Password: <input type='password' name='confirm_password'></p>
+                <input type='submit' value='Submit' id="submitbutton">
+                {% with success = get_flashed_messages(category_filter=["success"]) %}
+                {% if success %}
+                <h3>{{ success }}</h3>
+                {% endif %}
+                {% endwith %}
+                {% with wrong = get_flashed_messages(category_filter=["wrong"]) %}
+                {% if wrong %}
+                {% for x in wrong %}
+                  <h3>{{ x }}</h3>
+                  {% endfor %}
+                {% endif %}
+                {% endwith %}
+                </form>
+        </div>
+
+        <div class = "container1">
+                <form action='/login' method='post'>
+                <p>Email: <input type='text' name='email' placeholder='name@example.com'></p>
+                <p>Password: <input type='password' name='password'></p>
+                <input type='submit' value='Login' id="submitbutton">
+                </form>
+        </div>
+        <form action= "/create_message" method="POST">
+                <div id="messages">
+                    <h2>Messages</h2>
+                {% for message in messages %}
+                <div class="messages">
+                    <h3>{{message['first_name']}} {{message['created_at']}} {{message['updated_at']}}</h3>
+                        <p>{{message ['message']}}</p>  
+                        <a href="/delete/{{message['id']}}" class = "btn btn-primary">Delete</a>
+                                {% endfor %}
+                        </div>
+                        </div>
+            </form>
+        
+            <h5> send a message </h5>
+            {% for user in users %}
+            <form action='/create_message' method="POST"> 
+                {{user.first_name}}<textarea  name="message"> </textarea>
+                <input type= "hidden" value = "{{user.id}}" name= "recipientid" >
+                <button type="submit" class="btn btn-primary">Send</button>    
+            </form>
+               {% endfor %}
+
+</body>
+
+</html>
+
+
